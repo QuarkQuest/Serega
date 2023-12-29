@@ -19,6 +19,37 @@ void output(int** a, int n, int m) {
 	}
 	printf("\n");
 }
+int randomized(int** a,int n,int m) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			a[i][j] = 1 + rand() % 100;
+		}
+	}
+	return **a;
+}
+int transport(int n,int m,int **a) {
+	int max = Max(n, m);
+	if (n != m) {
+		for (int i = 0; i < max; i++) {
+			for (int j = i + 1; j < max; j++) {
+				int temp = a[i][j];
+				a[i][j] = a[j][i];
+				a[j][i] = temp;
+			}
+		}
+	}
+	else {
+		for (int i = 0; i < max; i++) {
+			for (int j = i + 1; j < max; j++) {
+				int temp = a[i][j];
+				a[i][j] = a[j][i];
+				a[j][i] = temp;
+			}
+		}
+
+	}
+	return **a;
+}
 int main() {
 	int n,m;
 	scanf("%d", &n);
@@ -30,40 +61,10 @@ int main() {
 		a[i] = (int*)calloc(max,sizeof(int));
 	}
 	srand(time(NULL));
-	if (n != m) {
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				a[i][j] = 1 + rand() % 100;
-			}
-		}
-		output(a, n, m);
-		for (int i = 0; i < max; i++) {
-			for (int j = i + 1; j < max; j++) {
-				int temp = a[i][j];
-				a[i][j] = a[j][i];
-				a[j][i] = temp;
-			}
-		}
-		output(a, m, n);
-		
-	}
-	else {
-		for (int i = 0; i < max; i++) {
-			for (int j = 0; j < max; j++) {
-				a[i][j] = 1 + rand() % 100;
-			}
-		}
-		output(a, n, m);
-		for (int i = 0; i < max; i++) {
-			for (int j = i + 1; j < max; j++) {
-				int temp = a[i][j];
-				a[i][j] = a[j][i];
-				a[j][i] = temp;
-			}
-		}
-		output(a, n, m);
-	
-	}
+	randomized(a, n, m);
+	output(a, n, m);
+	transport(n, m, a);
+	output(a, m, n);
 
 	for (int i = 0; i < max; i++) {
 		free(a[i]);
